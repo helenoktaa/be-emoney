@@ -1,0 +1,14 @@
+# Environment
+.env
+
+# Firebase credentials
+firebase_service_account.json
+
+# Binary
+*.exe
+
+# Mac garbage
+__MACOSX/
+
+# Go
+vendor/
