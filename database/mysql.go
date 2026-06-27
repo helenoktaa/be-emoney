@@ -3,6 +3,7 @@ package database
 import (
 	"fmt"
 	"log"
+	"time"
 
 	"emoney-2fa/config"
 	"emoney-2fa/models"
@@ -13,7 +14,7 @@ import (
 )
 
 func InitMySQL(cfg *config.Config) *gorm.DB {
-	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Asia%%2FJakarta",
 		cfg.DBUser,
 		cfg.DBPassword,
 		cfg.DBHost,
@@ -21,8 +22,13 @@ func InitMySQL(cfg *config.Config) *gorm.DB {
 		cfg.DBName,
 	)
 
+	loc, _ := time.LoadLocation("Asia/Jakarta")
+
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
 		Logger: logger.Default.LogMode(logger.Info),
+		NowFunc: func() time.Time {
+			return time.Now().In(loc)
+		},
 	})
 	if err != nil {
 		log.Fatal("Failed to connect to MySQL:", err)

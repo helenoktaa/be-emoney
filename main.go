@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"time"
 
 	"emoney-2fa/config"
 	"emoney-2fa/database"
@@ -9,6 +10,11 @@ import (
 )
 
 func main() {
+	loc, err := time.LoadLocation("Asia/Jakarta")
+	if err == nil {
+		time.Local = loc
+	}
+
 	cfg := config.Load()
 
 	db := database.InitMySQL(cfg)
